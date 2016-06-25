@@ -1,0 +1,32 @@
+#!/bin/bash          
+clear
+echo "-------------------------------------------------------------"
+echo
+echo
+echo "This script will run an update of ScreenlyOSE on $HOSTNAME."
+echo "Script by Henrik [henrik@korslind.com]"
+echo "Version 0.3"
+echo
+echo
+echo "-------------------------------------------------------------"
+echo
+echo
+echo -n "Do you run want to run the ScreenlyOSE update script and reboot (y/n)?"
+old_stty_cfg=$(stty -g)
+stty raw -echo
+answer=$( while ! head -c 1 | grep -i '[ny]' ;do true ;done )
+stty $old_stty_cfg
+	if echo "$answer" | grep -iq "^y" ;then
+    		echo
+		echo "Running script!"
+		echo
+		/bin/bash ~/screenly/misc/run_upgrade.sh
+		echo "Update completed."
+		echo "Doing a shutdown of $HOSTNAME."
+		echo
+		sudo shutdown -r now
+	else
+    		echo
+		echo "Aborting update!"
+		echo
+	fi
